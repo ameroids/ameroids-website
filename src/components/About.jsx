@@ -12,7 +12,7 @@ export default function About() {
           <Reveal className="about__img-wrap" dir="zoom">
             <div className="img-curtain about__img-frame">
               <img
-                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80"
+                src="/image1.png"
                 alt="Tech Studio Workspace"
                 loading="lazy"
               />

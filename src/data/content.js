@@ -7,17 +7,17 @@ export const company = {
   subheadline:
     'At Ameroids Tech Studio, we help businesses grow through innovative websites, custom software solutions, AI automation, and digital transformation. From startups to enterprises, we build scalable technology that drives real business results.',
   phone: '+91 7223861653', 
-  phoneAlt: '+91 7223861653', 
+  phoneAlt: '', 
   email: 'ameroidstechstudio@gmail.com', 
   address: {
-    line1: '', 
+    line1: 'Indore, Saifee Nagar', 
     line2: '',
     city: '',
-    country: 'India',
+    country: '',
   },
   hours: 'Monday – Saturday · 10:00 AM – 7:00 PM (IST)',
   mapEmbedUrl:
-    'https://www.google.com/maps?q=India&output=embed', 
+    'https://www.google.com/maps?q=Indore&output=embed', 
   social: {
     linkedin: '#', 
     facebook: '#',
@@ -26,14 +26,14 @@ export const company = {
 }
 
 export const stats = [
-  { value: 50, suffix: '+', label: 'Projects Delivered', sub: 'Successfully completed' },
+  { value: 25, suffix: '+', label: 'Projects Delivered', sub: 'Successfully completed' },
   { value: 100, suffix: '%', label: 'Client Satisfaction', sub: 'Top rated solutions', compact: true },
-  { value: 10, suffix: '+', label: 'AI Solutions', sub: 'Automated workflows' },
+  { value: 99.9, suffix: '%', label: 'Server Uptime', sub: 'Reliable infrastructure' },
   { value: 24, suffix: '/7', label: 'Support', sub: 'Continuous maintenance', compact: true },
 ]
 
 export const heroStats = [
-  { value: '50+', label: 'projects delivered' },
+  { value: '25+', label: 'projects delivered' },
   { value: '100%', label: 'client satisfaction' },
   { value: '24/7', label: 'support & maintenance' },
 ]
@@ -56,7 +56,7 @@ export const about = {
 export const milestones = [
   { year: '2024', text: 'Company Founded' },
   { year: '2025', text: 'Expanded to AI Automation' },
-  { year: '2026', text: '50+ Custom Software Projects Delivered' },
+  { year: '2026', text: '25+ Custom Software Projects Delivered' },
 ]
 
 export const dispatchTicker = [
@@ -99,8 +99,7 @@ export const infrastructure = {
   title: 'Modern Technology Stack & AI-Driven Solutions',
   intro:
     'We build reliable, scalable, and high-performance solutions engineered for scale, safety and speed.',
-  image:
-    'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1400&q=70',
+  image: '/image2.png',
   imageAlt: 'Modern Technology',
   features: [
     'Experienced Development Team',
@@ -201,29 +200,29 @@ export const processSteps = [
 
 export const gallery = [
   {
-    src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=70',
-    caption: 'Modern Web Applications',
+    src: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=900&q=70',
+    caption: 'Custom Software Development',
     tall: true,
   },
   {
-    src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=70',
+    src: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=900&q=70',
     caption: 'Data Analytics & Dashboards',
   },
   {
-    src: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=70',
+    src: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=900&q=70',
     caption: 'AI Integration & Automation',
   },
   {
-    src: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=70',
+    src: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=900&q=70',
     caption: 'Collaborative Design Process',
     tall: true,
   },
   {
-    src: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70',
-    caption: 'Custom Software Development',
+    src: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=900&q=70',
+    caption: 'UI/UX Design',
   },
   {
-    src: 'https://images.unsplash.com/photo-1531297122539-5692b6982f60?auto=format&fit=crop&w=900&q=70',
+    src: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=70',
     caption: 'Cloud Infrastructure',
   },
 ]

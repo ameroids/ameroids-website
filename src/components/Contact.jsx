@@ -7,19 +7,22 @@ const infoItems = [
   {
     icon: 'phone',
     label: 'Call Us',
-    lines: [company.phone, company.phoneAlt],
+    lines: [company.phone, company.phoneAlt].filter(Boolean),
     href: `tel:${company.phone.replace(/\s/g, '')}`,
   },
   {
     icon: 'mail',
     label: 'Email',
-    lines: [company.email, company.hours],
+    lines: [company.email, company.hours].filter(Boolean),
     href: `mailto:${company.email}`,
   },
   {
     icon: 'pin',
     label: 'Visit Us',
-    lines: [company.address.line1, `${company.address.line2}, ${company.address.city}`],
+    lines: [
+      company.address.line1,
+      [company.address.line2, company.address.city, company.address.country].filter(Boolean).join(', ')
+    ].filter(Boolean),
   },
 ]
 

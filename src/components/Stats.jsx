@@ -50,8 +50,8 @@ export default function Stats() {
       <div className="container">
         <SectionHead
           eyebrow="Operations at a Glance"
-          title="The numbers behind two decades of reliability"
-          lead="Live operational metrics from across our warehousing and distribution network."
+          title="The numbers behind our reliability"
+          lead="Live operational metrics from our digital infrastructure and global client network."
           light
         />
         <div className="stats__grid">

@@ -15,10 +15,6 @@ export default function Infrastructure() {
         <div className="infra__grid">
           <Reveal className="infra__media img-curtain" dir="left">
             <img src={infrastructure.image} alt={infrastructure.imageAlt} loading="lazy" />
-            <div className="infra__media-tag">
-              <Icon name="warehouse" size={18} />
-              Facility 1 · Pithampur
-            </div>
           </Reveal>
 
           <div className="infra__side">
