@@ -11,8 +11,8 @@ export default function Gallery() {
       <div className="container">
         <SectionHead
           eyebrow="Gallery"
-          title="Inside our workspace"
-          lead="A glimpse into our development process, tech stack, and digital solutions."
+          title="Our Digital Solutions"
+          lead="Explore our portfolio of high-performance software, AI integrations, and digital platforms."
         />
         
         {/* Thumbnails row */}

@@ -8,7 +8,7 @@ export default function Services() {
       <div className="container">
         <SectionHead
           eyebrow="Our Services"
-          title="Everything between the factory gate and the shop shelf"
+          title="End-to-End Digital Transformation"
           lead="A complete tech and automation stack — so businesses get one accountable partner instead of five vendors."
         />
         <div className="services__grid">

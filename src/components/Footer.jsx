@@ -1,4 +1,5 @@
 import { company, navLinks, services } from '../data/content.js'
+import Icon from './Icons.jsx'
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -7,15 +8,20 @@ export default function Footer() {
       <div className="container footer__grid">
         <div className="footer__brand">
           <div className="footer__logo">
-            <img src="/final-logo.png" alt="" height="64" />
+            <img src="/final-logo1.png" alt="" height="64" />
             <div>
               <strong>{company.name}</strong>
               <small>{company.tagline}</small>
             </div>
           </div>
           <p>
-            Building Websites • Developing Software • Automating Businesses with AI
+            Building Digital Experiences. Powering Businesses with AI.
           </p>
+          <div className="footer__socials">
+            <a href="#twitter" aria-label="Twitter"><Icon name="twitter" size={20} /></a>
+            <a href="#linkedin" aria-label="LinkedIn"><Icon name="linkedin" size={20} /></a>
+            <a href="#github" aria-label="GitHub"><Icon name="github" size={20} /></a>
+          </div>
         </div>
 
         <nav className="footer__col" aria-label="Footer — sections">
@@ -36,17 +42,13 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="footer__col">
-          <h3>Reach Us</h3>
-          <p>
-            {company.address.line1}
-            <br />
-            {company.address.line2}
-            <br />
-            {company.address.city}
-          </p>
-          <a href={`tel:${company.phone.replace(/\s/g, '')}`}>{company.phone}</a>
-          <a href={`mailto:${company.email}`}>{company.email}</a>
+        <div className="footer__col footer__newsletter-col">
+          <h3>Stay Updated</h3>
+          <p>Subscribe to our newsletter for the latest tech insights.</p>
+          <form className="footer__newsletter" onSubmit={(e) => e.preventDefault()}>
+            <input type="email" placeholder="Enter your email" required />
+            <button type="submit">Subscribe</button>
+          </form>
         </div>
       </div>
 

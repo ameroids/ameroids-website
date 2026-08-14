@@ -168,31 +168,37 @@ export const whyUs = [
 export const processSteps = [
   {
     step: '01',
+    icon: 'search',
     title: 'Discovery',
     text: 'Understanding your business goals and requirements.',
   },
   {
     step: '02',
+    icon: 'map',
     title: 'Planning',
     text: 'Creating the project roadmap and defining milestones.',
   },
   {
     step: '03',
+    icon: 'brush',
     title: 'Design',
     text: 'Crafting modern and intuitive user interfaces.',
   },
   {
     step: '04',
+    icon: 'code',
     title: 'Development',
     text: 'Building reliable, scalable, and high-performance solutions.',
   },
   {
     step: '05',
+    icon: 'shield_check',
     title: 'Testing',
     text: 'Ensuring quality through comprehensive testing.',
   },
   {
     step: '06',
+    icon: 'rocket',
     title: 'Launch & Support',
     text: 'Deploying your solution and providing continuous support.',
   },

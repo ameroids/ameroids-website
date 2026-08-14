@@ -8,8 +8,8 @@ export default function WhyUs() {
       <div className="container">
         <SectionHead
           eyebrow="Why Choose Us"
-          title="What keeps principals with us for 20+ years"
-          lead="Logistics is a business of small details done right, every single day. These are ours."
+          title="Why modern businesses trust our team"
+          lead="Software development is a craft of complex details executed perfectly, every single day. Here is how we deliver excellence."
         />
         <div className="why__grid">
           {whyUs.map((w, i) => (
