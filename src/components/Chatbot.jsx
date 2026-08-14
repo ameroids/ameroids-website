@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
+import { searchKnowledge } from '../data/chatbotKnowledge.js';
 import './Chatbot.css';
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [messages, setMessages] = useState([
     { text: "Hello! I'm Elara. How can I help you today?", sender: 'bot' }
   ]);
@@ -15,21 +17,25 @@ export default function Chatbot() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isTyping]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!inputText.trim()) return;
 
-    setMessages(prev => [...prev, { text: inputText, sender: 'user' }]);
+    const userText = inputText;
+    setMessages(prev => [...prev, { text: userText, sender: 'user' }]);
     setInputText('');
+    setIsTyping(true);
 
-    setTimeout(() => {
-      setMessages(prev => [...prev, { 
-        text: "Thank you for your message! Our team at Ameroids Tech Studio is always here to assist.", 
-        sender: 'bot' 
-      }]);
-    }, 1000);
+    // Call the local search engine which simulates processing large data
+    const aiResponse = await searchKnowledge(userText);
+    
+    setMessages(prev => [...prev, { 
+      text: aiResponse, 
+      sender: 'bot' 
+    }]);
+    setIsTyping(false);
   };
 
   return (
@@ -51,9 +57,20 @@ export default function Chatbot() {
           <div className="chatbot-messages">
             {messages.map((msg, i) => (
               <div key={i} className={`chatbot-message ${msg.sender === 'user' ? 'message-user' : 'message-bot'}`}>
-                {msg.text}
+                {msg.text.split('\n').map((line, j) => (
+                  <span key={j}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
               </div>
             ))}
+            
+            {isTyping && (
+              <div className="chatbot-message message-bot typing-indicator">
+                <span></span><span></span><span></span>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
           
