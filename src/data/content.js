@@ -99,7 +99,7 @@ export const infrastructure = {
   title: 'Modern Technology Stack & AI-Driven Solutions',
   intro:
     'We build reliable, scalable, and high-performance solutions engineered for scale, safety and speed.',
-  image: '/image2.png',
+  image: '/image2.webp',
   imageAlt: 'Modern Technology',
   features: [
     'Experienced Development Team',

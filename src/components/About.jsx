@@ -12,7 +12,7 @@ export default function About() {
           <Reveal className="about__img-wrap" dir="zoom">
             <div className="img-curtain about__img-frame">
               <img
-                src="/image1.png"
+                src="/image1.webp"
                 alt="Tech Studio Workspace"
                 loading="lazy"
               />
