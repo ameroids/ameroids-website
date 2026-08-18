@@ -30,29 +30,24 @@ export default function Hero() {
       <div className="container hero__inner">
         <div className="hero__copy">
           <h1 className="hero__title">
-            {[
-              [
-                ['Transform', false],
-                ['Your Business', true],
-              ],
-              [
-                ['With Modern', false],
-                [dynamicWords[wordIndex], true],
-              ],
-            ].map((line, li) => (
-              <span className="hero__line" key={li}>
-                {line.map(([word, accent], wi) => (
-                  <span className="hero__word" key={wi} style={{ '--i': li * 2 + wi }}>
-                    <span 
-                      key={word}
-                      className={`hero__word-inner ${accent ? 'hero__word-accent' : ''} ${li === 1 && wi === 1 ? 'hero-highlight-box' : ''} ${li === 1 && wi === 1 && !isInitial ? 'word-rotate' : ''}`}
-                    >
-                      {word}
-                    </span>
-                  </span>
-                ))}
+            <span className="hero__line">
+              <span className="hero__word" style={{ '--i': 0 }}>
+                <span className="hero__word-inner">Transform</span>
               </span>
-            ))}
+              <span className="hero__word" style={{ '--i': 1 }}>
+                <span className="hero__word-inner hero__word-accent">Your Business</span>
+              </span>
+            </span>
+            <span className="hero__line">
+              <span className="hero__word" style={{ '--i': 2 }}>
+                <span className="hero__word-inner">With Modern</span>
+              </span>
+              <span className="hero__word" style={{ '--i': 3 }}>
+                <span className={`hero__word-inner hero__word-accent hero-highlight-box ${!isInitial ? 'word-rotate' : ''}`}>
+                  {dynamicWords[wordIndex]}
+                </span>
+              </span>
+            </span>
           </h1>
           <p className="hero__sub">{company.subheadline}</p>
 
