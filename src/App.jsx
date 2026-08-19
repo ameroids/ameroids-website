@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense, lazy } from 'react'
 import Lenis from 'lenis'
 import { Preloader, ScrollProgress, Cursor, Magnetic, Tilt, DynamicSounds, Parallax } from './components/Experience.jsx'
 import Navbar from './components/Navbar.jsx'
@@ -15,10 +15,12 @@ import Testimonials from './components/Testimonials.jsx'
 import FAQ from './components/FAQ.jsx'
 import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
-import Chatbot from './components/Chatbot.jsx'
-import Terms from './components/Terms.jsx'
-import AudioPlayer from './components/AudioPlayer.jsx'
-import EasterEgg from './components/EasterEgg.jsx'
+
+// Lazy load non-critical / heavy functional components to defer JS execution
+const Chatbot = lazy(() => import('./components/Chatbot.jsx'))
+const Terms = lazy(() => import('./components/Terms.jsx'))
+const AudioPlayer = lazy(() => import('./components/AudioPlayer.jsx'))
+const EasterEgg = lazy(() => import('./components/EasterEgg.jsx'))
 
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState(window.location.hash)
@@ -69,7 +71,7 @@ export default function App() {
       <Navbar />
       <main>
         {currentRoute === '#terms' ? (
-          <Terms />
+          <Suspense fallback={<div style={{ minHeight: '100vh' }} />}><Terms /></Suspense>
         ) : (
           <>
             <Hero />
@@ -88,9 +90,11 @@ export default function App() {
         )}
       </main>
       <Footer />
-      <Chatbot />
-      <AudioPlayer />
-      <EasterEgg />
+      <Suspense fallback={null}>
+        <Chatbot />
+        <AudioPlayer />
+        <EasterEgg />
+      </Suspense>
     </>
   )
 }

@@ -18,12 +18,14 @@ export default function Hero3D() {
     const cleanups = []
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    Promise.all([
-      import('three'),
-      import('three/examples/jsm/geometries/RoundedBoxGeometry.js'),
-      import('three/examples/jsm/environments/RoomEnvironment.js'),
-    ])
-      .then(([THREE, { RoundedBoxGeometry }, { RoomEnvironment }]) => {
+    const initThreeJs = () => {
+      if (disposed) return;
+      Promise.all([
+        import('three'),
+        import('three/examples/jsm/geometries/RoundedBoxGeometry.js'),
+        import('three/examples/jsm/environments/RoomEnvironment.js'),
+      ])
+        .then(([THREE, { RoundedBoxGeometry }, { RoomEnvironment }]) => {
         if (disposed) return
 
         let renderer
@@ -420,10 +422,20 @@ export default function Hero3D() {
         })
       })
       .catch(() => {})
+    };
+
+    let ric;
+    if ('requestIdleCallback' in window) {
+      ric = requestIdleCallback(initThreeJs, { timeout: 2000 });
+    } else {
+      ric = setTimeout(initThreeJs, 500);
+    }
 
     return () => {
       disposed = true
       cancelAnimationFrame(raf)
+      if ('cancelIdleCallback' in window && ric) cancelIdleCallback(ric);
+      else clearTimeout(ric);
       cleanups.forEach((f) => f())
     }
   }, [])

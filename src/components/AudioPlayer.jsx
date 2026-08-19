@@ -6,37 +6,10 @@ export default function AudioPlayer() {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    // Attempt to autoplay on mount
-    const playAudio = async () => {
-      try {
-        if (audioRef.current) {
-          // Some browsers allow autoplay if it's explicitly called.
-          await audioRef.current.play();
-          setIsPlaying(true);
-        }
-      } catch (err) {
-        console.log("Autoplay prevented by browser. User interaction required.");
-        setIsPlaying(false);
-      }
-    };
-    
-    // Play on first user interaction if autoplay failed
-    const handleFirstInteraction = () => {
-      if (!isPlaying && audioRef.current) {
-        playAudio();
-      }
-      document.removeEventListener('click', handleFirstInteraction);
-    };
-
+    // Only set default volume on mount. Audio is deferred until play button is clicked.
     if (audioRef.current) {
-      audioRef.current.volume = 0.15; // Set volume to 15%
+      audioRef.current.volume = 0.15;
     }
-    playAudio();
-    document.addEventListener('click', handleFirstInteraction);
-
-    return () => {
-      document.removeEventListener('click', handleFirstInteraction);
-    };
   }, []);
 
   const togglePlay = (e) => {
@@ -44,14 +17,17 @@ export default function AudioPlayer() {
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      audioRef.current.play();
+      if (audioRef.current) {
+        audioRef.current.volume = 0.15;
+        audioRef.current.play().catch(() => {});
+      }
     }
     setIsPlaying(!isPlaying);
   };
 
   return (
     <div style={{ position: 'fixed', bottom: '20px', left: '20px', zIndex: 9999 }}>
-      <audio ref={audioRef} src="/background-music.mp3" loop />
+      <audio ref={audioRef} src="/background-music.mp3" preload="none" loop />
       <button 
         onClick={togglePlay}
         style={{
