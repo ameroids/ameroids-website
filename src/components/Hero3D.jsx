@@ -446,26 +446,20 @@ export default function Hero3D() {
 
     const isMobile = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
     
-    const onAppReady = () => {
-      if (!isMobile) {
+    const events = ['mousemove', 'scroll', 'touchstart', 'click', 'keydown'];
+    
+    const onInteract = () => {
+      events.forEach(e => window.removeEventListener(e, onInteract));
+      if (!ready) {
         initThreeJs();
       }
     };
 
-    const onClickToLoad = () => {
-      if (!ready && isMobile) {
-        initThreeJs();
-      }
-    };
-
-    window.addEventListener('app:ready', onAppReady);
-    if (!document.body.classList.contains('is-loading')) onAppReady();
-    wrapRef.current.addEventListener('click', onClickToLoad);
+    events.forEach(e => window.addEventListener(e, onInteract, { passive: true }));
 
     return () => {
       disposed = true
-      window.removeEventListener('app:ready', onAppReady);
-      if (wrapRef.current) wrapRef.current.removeEventListener('click', onClickToLoad);
+      events.forEach(e => window.removeEventListener(e, onInteract));
       cancelAnimationFrame(raf)
       cleanups.forEach((f) => f())
     }

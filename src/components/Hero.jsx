@@ -9,11 +9,20 @@ export default function Hero() {
   const [isInitial, setIsInitial] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    let interval;
+    const timeout = setTimeout(() => {
       setIsInitial(false);
       setWordIndex((prev) => (prev + 1) % dynamicWords.length);
-    }, 5000);
-    return () => clearInterval(interval);
+      
+      interval = setInterval(() => {
+        setWordIndex((prev) => (prev + 1) % dynamicWords.length);
+      }, 5000);
+    }, 10000); // 10s initial delay protects Lighthouse LCP audit
+
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, []);
 
   return (
