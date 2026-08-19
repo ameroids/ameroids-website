@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
+import { useLocation, Link } from 'react-router-dom'
 import { company, navLinks } from '../data/content.js'
 import { PhoneCall, Check } from 'lucide-react'
 
 function Logo() {
   return (
-    <a href="#top" className="logo" aria-label={`${company.name} — home`}>
+    <a href="/#top" className="logo" aria-label={`${company.name} — home`}>
       <span className="logo__mark" aria-hidden="true">
         <img src="/final-logo.png" alt="" height="54" />
       </span>
@@ -21,6 +22,8 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('')
   const [callStage, setCallStage] = useState('idle')
+  const location = useLocation()
+  const isBlog = location.pathname.startsWith('/blog')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -73,22 +76,43 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`nav ${scrolled ? 'nav--scrolled' : ''} ${open ? 'nav--open' : ''}`}>
+      {isBlog && (
+        <style>{`
+          .nav--light .nav__links a,
+          .nav--light .logo__text strong,
+          .nav--light .logo__text small {
+            color: #111827 !important;
+          }
+          .nav--light .nav__burger span {
+            background-color: #111827 !important;
+          }
+          .nav--light.nav--scrolled {
+            background: rgba(255, 255, 255, 0.9) !important;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+          }
+          .nav--light .logo__mark img {
+            filter: brightness(0.2) contrast(1.2);
+          }
+        `}</style>
+      )}
+      <header className={`nav ${scrolled ? 'nav--scrolled' : ''} ${open ? 'nav--open' : ''} ${isBlog ? 'nav--light' : ''}`}>
         <div className="container nav__inner">
           <Logo />
           <nav className="nav__links" aria-label="Primary">
+            <a href="/#top" className={!isBlog && active === 'top' ? 'is-active' : ''}>Home</a>
             {navLinks.map((l) => (
               <a
                 key={l.id}
-                href={`#${l.id}`}
-                className={active === l.id ? 'is-active' : ''}
-                aria-current={active === l.id ? 'true' : undefined}
+                href={`/#${l.id}`}
+                className={!isBlog && active === l.id ? 'is-active' : ''}
+                aria-current={!isBlog && active === l.id ? 'true' : undefined}
               >
                 {l.label}
               </a>
             ))}
+            <Link to="/blog" className={isBlog ? 'is-active' : ''} aria-current={isBlog ? 'page' : undefined}>Blog</Link>
           </nav>
-          <a href="#contact" className="btn btn--primary nav__cta" onClick={handleContactClick}>
+          <a href="/#contact" className="btn btn--primary nav__cta" onClick={handleContactClick}>
             Contact Us
           </a>
           <button
@@ -105,18 +129,32 @@ export default function Navbar() {
 
         <div className={`nav__drawer ${open ? 'is-open' : ''}`}>
           <nav aria-label="Mobile">
+            <a
+              href="/#top"
+              style={{ transitionDelay: '60ms' }}
+              onClick={() => setOpen(false)}
+            >
+              Home
+            </a>
             {navLinks.map((l, i) => (
               <a
                 key={l.id}
-                href={`#${l.id}`}
-                style={{ transitionDelay: `${60 + i * 40}ms` }}
+                href={`/#${l.id}`}
+                style={{ transitionDelay: `${100 + i * 40}ms` }}
                 onClick={() => setOpen(false)}
               >
                 {l.label}
               </a>
             ))}
+            <Link
+              to="/blog"
+              style={{ transitionDelay: `${100 + navLinks.length * 40}ms` }}
+              onClick={() => setOpen(false)}
+            >
+              Blog
+            </Link>
             <a
-              href="#contact"
+              href="/#contact"
               className="btn btn--primary"
               style={{ transitionDelay: '420ms' }}
               onClick={handleContactClick}

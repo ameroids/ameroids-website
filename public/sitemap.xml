@@ -5,4 +5,49 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://www.ameroids.in/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.ameroids.in/blog/why-business-websites-dont-generate-leads</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.ameroids.in/blog/why-most-business-websites-become-outdated</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.ameroids.in/blog/what-is-actually-making-your-website-slow</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.ameroids.in/blog/spending-money-on-ai-without-automating</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.ameroids.in/blog/custom-software-vs-ready-made</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.ameroids.in/blog/hidden-cost-of-cheap-website-development</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.ameroids.in/blog/why-business-software-doesnt-talk</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.ameroids.in/blog/is-your-business-website-actually-secure</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.ameroids.in/blog/mobile-experience-matters-more</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.ameroids.in/blog/before-you-build-custom-software</loc>
+    <priority>0.7</priority>
+  </url>
 </urlset>

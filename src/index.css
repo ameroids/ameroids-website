@@ -1630,7 +1630,7 @@ body.is-loading .hero__hint {
 }
 /* Outlined founding-year watermark — the establishment date is the brand's proof */
 .stats::after {
-  content: 'SINCE 2026';
+  content: 'AMEROIDS';
   position: absolute;
   top: 16px;
   right: -0.5%;

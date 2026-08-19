@@ -1,4 +1,5 @@
 import { useState, useEffect, Suspense, lazy } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import { Preloader, ScrollProgress, Cursor, Magnetic, Tilt, DynamicSounds, Parallax } from './components/Experience.jsx'
 import Navbar from './components/Navbar.jsx'
@@ -21,15 +22,48 @@ const Chatbot = lazy(() => import('./components/Chatbot.jsx'))
 const Terms = lazy(() => import('./components/Terms.jsx'))
 const AudioPlayer = lazy(() => import('./components/AudioPlayer.jsx'))
 const EasterEgg = lazy(() => import('./components/EasterEgg.jsx'))
+const BlogIndex = lazy(() => import('./pages/BlogIndex.jsx'))
+const BlogPost = lazy(() => import('./pages/BlogPost.jsx'))
+
+function Home() {
+  const location = useLocation()
+  
+  useEffect(() => {
+    if (location.hash) {
+      setTimeout(() => {
+        const id = location.hash.substring(1)
+        const el = document.getElementById(id)
+        if (el) el.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [location])
+
+  if (location.hash === '#terms') {
+    return <Suspense fallback={<div style={{ minHeight: '100vh' }} />}><Terms /></Suspense>
+  }
+
+  return (
+    <>
+      <Hero />
+      <Brands />
+      <About />
+      <Services />
+      <Infrastructure />
+      <Stats />
+      <WhyUs />
+      <Process />
+      <Gallery />
+      <Testimonials />
+      <FAQ />
+      <Contact />
+    </>
+  )
+}
 
 export default function App() {
-  const [currentRoute, setCurrentRoute] = useState(window.location.hash)
-
-  useEffect(() => {
-    const handleHashChange = () => setCurrentRoute(window.location.hash)
-    window.addEventListener('hashchange', handleHashChange)
-    return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [])
+  // removed currentRoute hash listening since we use react-router-dom now
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -72,24 +106,11 @@ export default function App() {
       </a>
       <Navbar />
       <main>
-        {currentRoute === '#terms' ? (
-          <Suspense fallback={<div style={{ minHeight: '100vh' }} />}><Terms /></Suspense>
-        ) : (
-          <>
-            <Hero />
-            <Brands />
-            <About />
-            <Services />
-            <Infrastructure />
-            <Stats />
-            <WhyUs />
-            <Process />
-            <Gallery />
-            <Testimonials />
-            <FAQ />
-            <Contact />
-          </>
-        )}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/blog" element={<Suspense fallback={<div style={{ minHeight: '100vh' }} />}><BlogIndex /></Suspense>} />
+          <Route path="/blog/:slug" element={<Suspense fallback={<div style={{ minHeight: '100vh' }} />}><BlogPost /></Suspense>} />
+        </Routes>
       </main>
       <Footer />
       <Suspense fallback={null}>

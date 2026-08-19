@@ -1,5 +1,6 @@
 import { company, navLinks, services } from '../data/content.js'
 import Icon from './Icons.jsx'
+import { Link } from 'react-router-dom'
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -27,16 +28,17 @@ export default function Footer() {
         <nav className="footer__col" aria-label="Footer — sections">
           <h3>Explore</h3>
           {navLinks.slice(0, 5).map((l) => (
-            <a key={l.id} href={`#${l.id}`}>
+            <a key={l.id} href={`/#${l.id}`}>
               {l.label}
             </a>
           ))}
+          <Link to="/blog">Blog</Link>
         </nav>
 
         <div className="footer__col">
           <h3>Services</h3>
           {services.slice(0, 5).map((s) => (
-            <a key={s.title} href="#services">
+            <a key={s.title} href="/#services">
               {s.title}
             </a>
           ))}
@@ -59,7 +61,7 @@ export default function Footer() {
           </p>
           <p className="footer__note" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
             <span>Delivering exceptional digital experiences.</span>
-            <a href="#terms" style={{ color: 'inherit', textDecoration: 'underline' }}>Terms & Conditions</a>
+            <a href="/#terms" style={{ color: 'inherit', textDecoration: 'underline' }}>Terms & Conditions</a>
           </p>
         </div>
         <p style={{ opacity: 0.25, fontSize: '0.75rem', fontFamily: 'monospace', letterSpacing: '0.1em', marginTop: '-4px' }}>
