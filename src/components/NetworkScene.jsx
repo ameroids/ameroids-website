@@ -29,9 +29,10 @@ export default function NetworkScene() {
     const cleanups = []
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    import('three')
-      .then((THREE) => {
-        if (disposed) return
+    const importThree = () => {
+      import('three')
+        .then((THREE) => {
+          if (disposed) return
 
         let renderer
         try {
@@ -157,6 +158,7 @@ export default function NetworkScene() {
         let inView = false
         const io = new IntersectionObserver(([e]) => {
           inView = e.isIntersecting
+          
           if (inView && !reduced) {
             if (!raf) loop()
           }
@@ -214,9 +216,19 @@ export default function NetworkScene() {
         })
       })
       .catch(() => {})
+    };
+
+    const initIo = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        initIo.disconnect();
+        if (!reduced) importThree();
+      }
+    });
+    initIo.observe(wrap);
 
     return () => {
       disposed = true
+      initIo.disconnect();
       cancelAnimationFrame(raf)
       cleanups.forEach((f) => f())
     }

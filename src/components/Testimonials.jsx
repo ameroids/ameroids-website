@@ -31,9 +31,10 @@ export default function Testimonials() {
       }
     })
 
-    import('three')
-      .then((THREE) => {
-        if (disposed) return
+    const importThree = () => {
+      import('three')
+        .then((THREE) => {
+          if (disposed) return
 
         let renderer
         try {
@@ -221,8 +222,8 @@ export default function Testimonials() {
         let inView = false
         const io = new IntersectionObserver(([e]) => {
           inView = e.isIntersecting
-          if (inView) {
-            if (!raf) loop()
+          if (inView && !raf) {
+             loop()
           }
         })
         io.observe(wrap)
@@ -252,9 +253,19 @@ export default function Testimonials() {
         })
       })
       .catch(() => {})
+    };
+
+    const initIo = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        initIo.disconnect();
+        importThree();
+      }
+    });
+    initIo.observe(wrap);
 
     return () => {
       disposed = true
+      initIo.disconnect();
       cancelAnimationFrame(raf)
       cleanups.forEach((f) => f())
     }

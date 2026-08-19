@@ -22,7 +22,10 @@ export function Preloader() {
       setPhase('leaving')
       document.body.classList.remove('is-loading')
     }, SPLASH_LEAVE)
-    const t2 = setTimeout(() => setPhase('done'), SPLASH_DONE)
+    const t2 = setTimeout(() => {
+      setPhase('done')
+      window.dispatchEvent(new CustomEvent('app:ready'))
+    }, SPLASH_DONE)
 
     let raf = 0
     const start = performance.now()

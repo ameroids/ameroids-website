@@ -444,13 +444,28 @@ export default function Hero3D() {
       .catch(() => {})
     };
 
-    // Safely defer initialization until *after* the initial Preloader/Splash paints
-    // The preloader is 1800ms, so 2500ms guarantees the main thread is totally free.
-    const deferTimer = setTimeout(initThreeJs, 2500);
+    const isMobile = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
+    
+    const onAppReady = () => {
+      if (!isMobile) {
+        initThreeJs();
+      }
+    };
+
+    const onClickToLoad = () => {
+      if (!ready && isMobile) {
+        initThreeJs();
+      }
+    };
+
+    window.addEventListener('app:ready', onAppReady);
+    if (!document.body.classList.contains('is-loading')) onAppReady();
+    wrapRef.current.addEventListener('click', onClickToLoad);
 
     return () => {
       disposed = true
-      clearTimeout(deferTimer)
+      window.removeEventListener('app:ready', onAppReady);
+      if (wrapRef.current) wrapRef.current.removeEventListener('click', onClickToLoad);
       cancelAnimationFrame(raf)
       cleanups.forEach((f) => f())
     }
