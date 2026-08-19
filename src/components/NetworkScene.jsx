@@ -154,9 +154,12 @@ export default function NetworkScene() {
         }
 
         /* ── Lifecycle ──────────────────────────────────────────── */
-        let inView = true
+        let inView = false
         const io = new IntersectionObserver(([e]) => {
           inView = e.isIntersecting
+          if (inView && !reduced) {
+            if (!raf) loop()
+          }
         })
         io.observe(wrap)
         cleanups.push(() => io.disconnect())
@@ -183,15 +186,19 @@ export default function NetworkScene() {
         }
 
         const loop = () => {
+          if (!inView || disposed || reduced) {
+            cancelAnimationFrame(raf)
+            raf = 0
+            return
+          }
           raf = requestAnimationFrame(loop)
-          if (!inView) return
           elapsed += clock.getDelta()
           renderFrame(elapsed)
         }
 
         renderFrame(0)
         setReady(true)
-        if (!reduced) loop()
+        if (!reduced && inView) loop()
 
         cleanups.push(() => {
           cancelAnimationFrame(raf)

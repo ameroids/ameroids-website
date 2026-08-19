@@ -5,8 +5,8 @@ const reducedMotion = () =>
 
 /* ── Page-load intro: three ribbon loops fly in and interlock into
       the Ameroids knot mark, then the curtain lifts into the hero ── */
-const SPLASH_LEAVE = 2050
-const SPLASH_DONE = 2950
+const SPLASH_LEAVE = 1000
+const SPLASH_DONE = 1800
 
 export function Preloader() {
   const [phase, setPhase] = useState('loading')
@@ -176,6 +176,7 @@ export function Cursor() {
     if (
       reducedMotion() ||
       !window.matchMedia('(pointer: fine)').matches ||
+      window.matchMedia('(pointer: coarse)').matches ||
       window.matchMedia('(hover: none)').matches
     )
       return

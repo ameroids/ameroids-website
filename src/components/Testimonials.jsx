@@ -218,12 +218,27 @@ export default function Testimonials() {
           })
         }
 
+        let inView = false
+        const io = new IntersectionObserver(([e]) => {
+          inView = e.isIntersecting
+          if (inView) {
+            if (!raf) loop()
+          }
+        })
+        io.observe(wrap)
+        cleanups.push(() => io.disconnect())
+
         const loop = () => {
+          if (!inView || disposed) {
+            cancelAnimationFrame(raf)
+            raf = 0
+            return
+          }
           raf = requestAnimationFrame(loop)
           renderFrame()
         }
 
-        loop()
+        if (inView) loop()
 
         cleanups.push(() => {
           cancelAnimationFrame(raf)

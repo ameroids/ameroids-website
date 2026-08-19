@@ -28,23 +28,29 @@ export default function Hero3D() {
         .then(([THREE, { RoundedBoxGeometry }, { RoomEnvironment }]) => {
         if (disposed) return
 
+        const isMobile = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
+
         let renderer
         try {
           renderer = new THREE.WebGLRenderer({
-            antialias: true,
+            antialias: !isMobile,
             alpha: true,
             powerPreference: 'high-performance',
           })
         } catch {
           return
         }
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75))
+        renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 1) : Math.min(window.devicePixelRatio, 1.75))
         renderer.setSize(wrap.clientWidth, wrap.clientHeight)
         renderer.toneMapping = THREE.ACESFilmicToneMapping
         renderer.toneMappingExposure = 1.08
         renderer.outputColorSpace = THREE.SRGBColorSpace
-        renderer.shadowMap.enabled = true
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap
+        
+        if (!isMobile) {
+          renderer.shadowMap.enabled = true
+          renderer.shadowMap.type = THREE.PCFSoftShadowMap
+        }
+        
         renderer.domElement.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;'
         wrap.appendChild(renderer.domElement)
 
@@ -59,26 +65,31 @@ export default function Hero3D() {
         camera.lookAt(0, 0.35, 0)
 
         /* ── Baked studio environment for believable PBR reflections ── */
-        const pmrem = new THREE.PMREMGenerator(renderer)
-        const envRT = pmrem.fromScene(new RoomEnvironment(), 0.045)
-        scene.environment = envRT.texture
+        let pmrem, envRT;
+        if (!isMobile) {
+          pmrem = new THREE.PMREMGenerator(renderer)
+          envRT = pmrem.fromScene(new RoomEnvironment(), 0.045)
+          scene.environment = envRT.texture
+        }
 
         /* ── Lighting ── */
-        scene.add(new THREE.AmbientLight(0xbcd2df, 0.35))
+        scene.add(new THREE.AmbientLight(0xbcd2df, isMobile ? 0.75 : 0.35))
         const key = new THREE.DirectionalLight(0xffffff, 2.1)
         key.position.set(4.5, 7, 6)
-        key.castShadow = true
-        key.shadow.mapSize.set(1024, 1024)
-        key.shadow.camera.left = -4
-        key.shadow.camera.right = 4
-        key.shadow.camera.top = 4
-        key.shadow.camera.bottom = -4
-        key.shadow.bias = -0.002
+        if (!isMobile) {
+          key.castShadow = true
+          key.shadow.mapSize.set(1024, 1024)
+          key.shadow.camera.left = -4
+          key.shadow.camera.right = 4
+          key.shadow.camera.top = 4
+          key.shadow.camera.bottom = -4
+          key.shadow.bias = -0.002
+        }
         scene.add(key)
         const rim = new THREE.DirectionalLight(0x9fc3d6, 1.1)
         rim.position.set(-6, 3, -5)
         scene.add(rim)
-        const coralFill = new THREE.PointLight(0xe57f84, 6, 9, 2)
+        const coralFill = new THREE.PointLight(0xe57f84, isMobile ? 3 : 6, 9, 2)
         coralFill.position.set(0.4, 0.2, 2.8)
         scene.add(coralFill)
 
@@ -120,8 +131,10 @@ export default function Hero3D() {
         scene.add(robot)
 
         const addShadow = (m) => {
-          m.castShadow = true
-          m.receiveShadow = true
+          if (!isMobile) {
+            m.castShadow = true
+            m.receiveShadow = true
+          }
           return m
         }
 
@@ -316,6 +329,9 @@ export default function Hero3D() {
         let inView = true
         const io = new IntersectionObserver(([e]) => {
           inView = e.isIntersecting
+          if (inView) {
+            if (!raf) loop() // Resume loop when it comes back into view
+          }
         })
         io.observe(wrap)
         cleanups.push(() => io.disconnect())
@@ -334,8 +350,12 @@ export default function Hero3D() {
         const clock = new THREE.Clock()
 
         const loop = () => {
+          if (!inView || disposed) {
+            cancelAnimationFrame(raf)
+            raf = 0
+            return
+          }
           raf = requestAnimationFrame(loop)
-          if (!inView) return
 
           const t = clock.getElapsedTime()
 
@@ -407,12 +427,12 @@ export default function Hero3D() {
         }
 
         setReady(true)
-        loop()
+          if (inView) loop()
 
         cleanups.push(() => {
           cancelAnimationFrame(raf)
-          envRT.dispose()
-          pmrem.dispose()
+          if (envRT) envRT.dispose()
+          if (pmrem) pmrem.dispose()
           scene.traverse((obj) => {
             if (obj.geometry) obj.geometry.dispose()
           })
@@ -424,18 +444,14 @@ export default function Hero3D() {
       .catch(() => {})
     };
 
-    let ric;
-    if ('requestIdleCallback' in window) {
-      ric = requestIdleCallback(initThreeJs, { timeout: 2000 });
-    } else {
-      ric = setTimeout(initThreeJs, 500);
-    }
+    // Safely defer initialization until *after* the initial Preloader/Splash paints
+    // The preloader is 1800ms, so 2500ms guarantees the main thread is totally free.
+    const deferTimer = setTimeout(initThreeJs, 2500);
 
     return () => {
       disposed = true
+      clearTimeout(deferTimer)
       cancelAnimationFrame(raf)
-      if ('cancelIdleCallback' in window && ric) cancelIdleCallback(ric);
-      else clearTimeout(ric);
       cleanups.forEach((f) => f())
     }
   }, [])
