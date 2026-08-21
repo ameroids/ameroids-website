@@ -3,6 +3,8 @@ import { company, heroStats } from '../data/content.js'
 import Icon from './Icons.jsx'
 import Hero3D from './Hero3D.jsx'
 
+import { ContainerTextFlip } from './ui/container-text-flip.jsx'
+
 export default function Hero() {
   const dynamicWords = ['Technology', 'AI Agents', 'Websites', 'Software', 'Automation'];
   const [wordIndex, setWordIndex] = useState(0);
@@ -47,15 +49,17 @@ export default function Hero() {
                 <span className="hero__word-inner hero__word-accent">Your Business</span>
               </span>
             </span>
-            <span className="hero__line">
+            <span className="hero__line flex items-center justify-center gap-2">
               <span className="hero__word" style={{ '--i': 2 }}>
                 <span className="hero__word-inner">With Modern</span>
               </span>
-              <span className="hero__word" style={{ '--i': 3 }}>
-                <span className={`hero__word-inner hero__word-accent hero-highlight-box ${!isInitial ? 'word-rotate' : ''}`}>
-                  {dynamicWords[wordIndex]}
-                </span>
-              </span>
+              <ContainerTextFlip 
+                words={dynamicWords}
+                className="bg-transparent shadow-none dark:bg-transparent dark:shadow-none text-[hsl(340,65%,75%)] md:text-[clamp(2.5rem,4vw,4.5rem)] pt-0 pb-0"
+                textClassName="hero__word-accent hero-highlight-box !inline-block"
+                interval={4000}
+                animationDuration={800}
+              />
             </span>
           </h1>
           <p className="hero__sub">{company.subheadline}</p>
