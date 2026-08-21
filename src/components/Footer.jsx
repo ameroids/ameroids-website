@@ -1,9 +1,29 @@
+import { useState } from 'react'
 import { company, navLinks, services } from '../data/content.js'
 import Icon from './Icons.jsx'
 import { Link } from 'react-router-dom'
+import { Check, Loader2 } from 'lucide-react'
 
 export default function Footer() {
   const year = new Date().getFullYear()
+  const [subStatus, setSubStatus] = useState('idle')
+  const [email, setEmail] = useState('')
+
+  const handleSubscribe = (e) => {
+    e.preventDefault()
+    if (!email || subStatus !== 'idle') return
+
+    setSubStatus('loading')
+    
+    setTimeout(() => {
+      setSubStatus('success')
+      setEmail('')
+      
+      setTimeout(() => {
+        setSubStatus('idle')
+      }, 3500)
+    }, 1500)
+  }
   return (
     <footer className="footer">
       <div className="container footer__grid">
@@ -47,9 +67,47 @@ export default function Footer() {
         <div className="footer__col footer__newsletter-col">
           <h3>Stay Updated</h3>
           <p>Subscribe to our newsletter for the latest tech insights.</p>
-          <form className="footer__newsletter" onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="Enter your email" required />
-            <button type="submit">Subscribe</button>
+          <form className="footer__newsletter" onSubmit={handleSubscribe}>
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required 
+              disabled={subStatus !== 'idle'}
+            />
+            <button 
+              type="submit" 
+              disabled={subStatus !== 'idle'}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                transition: 'all 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
+                backgroundColor: subStatus === 'success' ? '#10b981' : undefined,
+                color: subStatus === 'success' ? '#fff' : undefined,
+                minWidth: '120px'
+              }}
+            >
+              {subStatus === 'idle' && 'Subscribe'}
+              {subStatus === 'loading' && (
+                <>
+                  <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
+                </>
+              )}
+              {subStatus === 'success' && (
+                <>
+                  <Check size={16} /> Subscribed!
+                </>
+              )}
+            </button>
+            <style>{`
+              @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+              }
+            `}</style>
           </form>
         </div>
       </div>

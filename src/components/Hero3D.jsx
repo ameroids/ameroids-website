@@ -48,7 +48,7 @@ export default function Hero3D() {
         
         if (!isMobile) {
           renderer.shadowMap.enabled = true
-          renderer.shadowMap.type = THREE.PCFSoftShadowMap
+          renderer.shadowMap.type = THREE.PCFShadowMap
         }
         
         renderer.domElement.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;'
@@ -66,11 +66,9 @@ export default function Hero3D() {
 
         /* ── Baked studio environment for believable PBR reflections ── */
         let pmrem, envRT;
-        if (!isMobile) {
-          pmrem = new THREE.PMREMGenerator(renderer)
-          envRT = pmrem.fromScene(new RoomEnvironment(), 0.045)
-          scene.environment = envRT.texture
-        }
+        pmrem = new THREE.PMREMGenerator(renderer)
+        envRT = pmrem.fromScene(new RoomEnvironment(), 0.04)
+        scene.environment = envRT.texture
 
         /* ── Lighting ── */
         scene.add(new THREE.AmbientLight(0xbcd2df, isMobile ? 0.75 : 0.35))
@@ -317,7 +315,7 @@ export default function Hero3D() {
         const onClick = () => {
           if (!isWaving) {
             isWaving = true
-            waveStartTime = clock.getElapsedTime()
+            waveStartTime = (performance.now() - startTime) / 1000
             
             const audio = new Audio('/robot-hello.mp3');
             audio.play().catch(e => console.log('Audio play failed:', e));
@@ -347,7 +345,7 @@ export default function Hero3D() {
         ro.observe(wrap)
         cleanups.push(() => ro.disconnect())
 
-        const clock = new THREE.Clock()
+        const startTime = performance.now()
 
         const loop = () => {
           if (!inView || disposed) {
@@ -357,7 +355,7 @@ export default function Hero3D() {
           }
           raf = requestAnimationFrame(loop)
 
-          const t = clock.getElapsedTime()
+          const t = (performance.now() - startTime) / 1000
 
           if (!reduced) {
             mx += (tx - mx) * 0.05
@@ -427,7 +425,7 @@ export default function Hero3D() {
         }
 
         setReady(true)
-          if (inView) loop()
+        if (inView) loop()
 
         cleanups.push(() => {
           cancelAnimationFrame(raf)
@@ -444,22 +442,10 @@ export default function Hero3D() {
       .catch(() => {})
     };
 
-    const isMobile = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
-    
-    const events = ['mousemove', 'scroll', 'touchstart', 'click', 'keydown'];
-    
-    const onInteract = () => {
-      events.forEach(e => window.removeEventListener(e, onInteract));
-      if (!ready) {
-        initThreeJs();
-      }
-    };
-
-    events.forEach(e => window.addEventListener(e, onInteract, { passive: true }));
+    initThreeJs();
 
     return () => {
       disposed = true
-      events.forEach(e => window.removeEventListener(e, onInteract));
       cancelAnimationFrame(raf)
       cleanups.forEach((f) => f())
     }
