@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { company } from '../data/content.js'
-import { Reveal, SectionHead } from '../hooks/useReveal.jsx'
+import { Reveal, SectionHead, useReveal } from '../hooks/useReveal.jsx'
 import Icon from './Icons.jsx'
 
 const infoItems = [
@@ -29,6 +29,15 @@ const infoItems = [
 export default function Contact() {
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
+
+  const [videoWrapRef, videoVisible] = useReveal(0.5)
+  const videoRef = useRef(null)
+
+  useEffect(() => {
+    if (videoVisible && videoRef.current) {
+      videoRef.current.play().catch(e => console.log('Video play failed:', e))
+    }
+  }, [videoVisible])
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -88,14 +97,18 @@ ${message}`
                 </div>
               </div>
             ))}
-            <div className="contact__map">
-              <iframe
-                src={company.mapEmbedUrl}
-                title="Facility location map"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
+            <div className="contact__video-wrap" ref={videoWrapRef}>
+              <video 
+                ref={videoRef}
+                src="/map.mp4" 
+                muted 
+                loop 
+                playsInline 
+                className="contact__video"
               />
+              <div className="contact__video-tag">
+                <Icon name="pin" size={16} /> Indore Saifee Nagar
+              </div>
             </div>
           </Reveal>
 
